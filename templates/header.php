@@ -17,7 +17,9 @@
     <h1>Student Management System</h1>
     <nav>
       <a href="index.php">Home</a>
-      <a href="all_students.php">All Students</a>
+      <a href="students_manger.php">Students Manager</a>
+      <a href="gpa_manager.php">GPA Manager</a>
+      <a href="classes_student.php">Classes Manager</a>
       <a href="logout.php">Logout</a>
     </nav>
   </header>
