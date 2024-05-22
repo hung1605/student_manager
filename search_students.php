@@ -1,7 +1,7 @@
 <?php
 // Include necessary files and initialize database connection
 session_start();
-include 'student_functions.php';
+include 'functions/student_functions.php';
 
 // Check if the search term is provided in the request
 if (isset($_GET['search'])) {

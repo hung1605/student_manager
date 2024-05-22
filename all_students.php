@@ -12,15 +12,36 @@ include 'functions/student_functions.php';
 <!-- Include JavaScript for dynamic search suggestions -->
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    var searchInput = document.getElementById("searchInput");
     var suggestionBox = document.getElementById("suggestionBox");
 
+    // Fetch all students when the page finishes loading
+    fetchAllStudents();
+
+    function fetchAllStudents() {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          suggestionBox.innerHTML = xhr.responseText;
+        }
+      };
+      xhr.open("GET", "functions/get_all_students.php", true); // Change the URL to the correct path
+      xhr.send();
+    }
+
+    var searchInput = document.getElementById("searchInput");
+    var timeout = null;
+
     searchInput.addEventListener("input", function() {
+      clearTimeout(timeout);
       var searchQuery = searchInput.value.trim();
-      if (searchQuery.length > 0) {
-        fetchSuggestions(searchQuery);
+      if (searchQuery.length >= 0) {
+        // Fetch suggestions after a short delay to avoid excessive requests
+        timeout = setTimeout(function() {
+          fetchSuggestions(searchQuery);
+        }, 300);
       } else {
-        suggestionBox.innerHTML = "";
+        // If search query is empty, fetch all students
+        fetchAllStudents();
       }
     });
 
@@ -31,23 +52,25 @@ include 'functions/student_functions.php';
           suggestionBox.innerHTML = xhr.responseText;
         }
       };
-      xhr.open("GET", "functions/search_students.php?search=" + query, true);
+      xhr.open("GET", "search_students.php?search=" + query, true);
       xhr.send();
     }
   });
 </script>
 
+
+
 <!-- HTML for search input and suggestion box -->
 <h2>All Students</h2>
 
 <div>
-  <input type="text" id="searchInput" placeholder="Search by Name">
+  <input type="text" id="searchInput" placeholder="Search by Name" class="d-inline">
+  <button onclick="window.location.href='add_student.php'">Add Student</button>
   <div id="suggestionBox"></div>
 </div>
 
-<button onclick="window.location.href='add_student.php'">Add Student</button>
 
-<div id="studentList">
+<!-- <div id="studentList">
   <?php
   $students = getAllStudents();
   if ($students->num_rows > 0) {
@@ -70,7 +93,7 @@ include 'functions/student_functions.php';
     echo "No students found.";
   }
   ?>
-</div>
+</div> -->
 
 <script>
   function openPopup(url) {
