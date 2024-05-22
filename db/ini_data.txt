@@ -1,0 +1,37 @@
+-- Insert sample data into 'khoa' table
+INSERT INTO khoa (MaKhoa, TenKhoa) VALUES
+('K01', 'Computer Science'),
+('K02', 'Mathematics'),
+('K03', 'Physics');
+
+-- Insert sample data into 'nganh' table
+INSERT INTO nganh (MaNganh, TenNganh, MaKhoa) VALUES
+('N01', 'Software Engineering', 'K01'),
+('N02', 'Data Science', 'K01'),
+('N03', 'Applied Mathematics', 'K02');
+
+-- Insert sample data into 'lop' table
+INSERT INTO lop (MaLop, TenLop, MaNganh, KhoaHoc, HeDT, NamNhapHoc) VALUES
+('L01', 'SE01', 'N01', '2020-2024', 'Full-time', 2020),
+('L02', 'DS01', 'N02', '2020-2024', 'Full-time', 2020),
+('L03', 'AM01', 'N03', '2020-2024', 'Full-time', 2020);
+
+-- Insert sample data into 'sinhvien' table
+INSERT INTO sinhvien (MaSV, HoTen, MaLop, GioiTinh, NgaySinh, DiaChi) VALUES
+('SV01', 'John Doe', 'L01', 'Male', '2000-01-01', '123 Main St'),
+('SV02', 'Jane Smith', 'L02', 'Female', '2000-02-01', '456 Oak St'),
+('SV03', 'Alice Johnson', 'L03', 'Female', '2000-03-01', '789 Pine St');
+
+-- Insert sample data into 'hocphan' table
+INSERT INTO hocphan (MaHP, TenHP, SoDVHT, MaNganh, HocKy) VALUES
+('HP01', 'Introduction to Programming', 3, 'N01', 1),
+('HP02', 'Data Structures', 3, 'N01', 2),
+('HP03', 'Calculus I', 4, 'N02', 1);
+
+-- Insert sample data into 'diemhp' table
+INSERT INTO diemhp (MaSV, MaHP, DiemHP) VALUES
+('SV01', 'HP01', 85),
+('SV01', 'HP02', 90),
+('SV02', 'HP03', 95),
+('SV03', 'HP01', 75),
+('SV03', 'HP03', 80);
