@@ -4,21 +4,21 @@ include 'functions/auth_functions.php';
 include 'functions/student_functions.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $username = $_POST['username'];
-  $password = $_POST['password'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-  $user = authenticateUser($username, $password);
+    $user = authenticateUser($username, $password);
 
-  if ($user) {
-    $_SESSION['loggedin'] = true;
-    $_SESSION['username'] = $user['username'];
-    $_SESSION['role'] = $user['role'];
-    $_SESSION['studentid'] = $user['studentid'];
-    header("Location: index.php");
-    exit();
-  } else {
-    $login_error = "Invalid username or password.";
-  }
+    if ($user) {
+        $_SESSION['loggedin'] = true;
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['role'] = $user['role'];
+        $_SESSION['studentid'] = $user['studentid'];
+        header("Location: index.php");
+        exit();
+    } else {
+        $login_error = "Invalid username or password.";
+    }
 }
 
 $top_students = getTopStudents();
@@ -28,92 +28,124 @@ $top_students = getTopStudents();
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Login</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <!-- Bootstrap JS -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <!-- Custom CSS -->
-  <style>
-    body {
-      background: linear-gradient(to right, #6a11cb, #2575fc);
-      color: #fff;
-      font-family: Arial, sans-serif;
-    }
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    .login-container {
-      background: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+    <title>Quản Lý Sinh Viên</title>
 
-    .login-container h2 {
-      color: #333;
-    }
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
 
-    .table-container {
-      background: rgba(255, 255, 255, 0.8);
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      margin-left: 20px;
-    }
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
-    .table th,
-    .table td {
-      color: #333;
-    }
-  </style>
+    <!-- Template Main CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet">
 </head>
 
 <body>
 
-  <div class="container">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-white">
+    <div class="container-fluid">
+        <!-- Logo -->
+        <a class="navbar-brand d-inline-flex" href="#">
+            <img src="assets/img/PTITLogo.png" alt="Logo" style="width: 40px; height: 40px; margin-right: 10px">
+            <p class="align-content-center" style="height: 40px; color: #AD171C;">Học Viện Công Nghệ Bưu Chính Viễn Thông</p>
+        </a>
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#login" style="color: #AD171C">Đăng nhập</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="d-flex justify-content-center" style="width: 100%;height: 100vh;background: url('assets/img/hero-bg.jpg' ) top center;background-size: cover;">
+    <div class="flex-column pivot_center">
+        <div class="hero-container" data-aos="fade-in">
+            <h1 style="color: #AD171C; font-weight: bold">Posts and Telecommunications<br>Institute of Technology</h1>
+            <p style="color: #AD171C; font-weight: bold">We are <span style="font-weight: bold;border-bottom: 2px solid #0a53be;" class="typed" data-typed-items="Training, Research, Production and Business"></span></p>
+        </div>
+    </div>
+</div>
+
+
+<div id="login" class="container">
     <div class="row justify-content-center align-items-center vh-100">
-      <div class="col-md-5 login-container">
-        <h2 class="text-center">Login</h2>
-        <?php if (isset($login_error)) {
-          echo '<div class="alert alert-danger">' . $login_error . '</div>';
-        } ?>
-        <form method="post" action="">
-          <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" class="form-control" id="username" name="username" required>
-          </div>
-          <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" class="form-control" id="password" name="password" required>
-          </div>
-          <button type="submit" class="btn btn-primary btn-block">Login</button>
-        </form>
-      </div>
-      <div class="col-md-6 table-container">
-        <h2 class="text-center">Top 3 Students with Highest GPA</h2>
-        <?php
-        if ($top_students->num_rows > 0) {
-          echo '<table class="table table-striped mt-3"><thead class="thead-dark"><tr><th>ID</th><th>Name</th><th>Class</th><th>GPA</th></tr></thead><tbody>';
-          while ($row = $top_students->fetch_assoc()) {
-            $rounded_gpa = number_format($row['GPA'], 2);
-            echo '<tr>
+        <div class="col-md-5 login-container">
+            <h2 class="text-center">Login</h2>
+            <?php if (isset($login_error)) {
+                echo '<div class="alert alert-danger">' . $login_error . '</div>';
+            } ?>
+            <form method="post" action="">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
+        </div>
+        <div class="col-md-6 table-container">
+            <h2 class="text-center">Top 3 Students with Highest GPA</h2>
+            <?php
+            if ($top_students->num_rows > 0) {
+                echo '<table class="table table-striped mt-3"><thead class="thead-dark"><tr><th>ID</th><th>Name</th><th>Class</th><th>GPA</th></tr></thead><tbody>';
+                while ($row = $top_students->fetch_assoc()) {
+                    $rounded_gpa = number_format($row['GPA'], 2);
+                    echo '<tr>
                     <td>' . $row['MaSV'] . '</td>
                     <td>' . $row['HoTen'] . '</td>
                     <td>' . $row['MaLop'] . '</td>
                     <td>' . $rounded_gpa . '</td>
                 </tr>';
-          }
-          echo '</tbody></table>';
-        } else {
-          echo '<p>No students found.</p>';
-        }
-        ?>
-      </div>
+                }
+                echo '</tbody></table>';
+            } else {
+                echo '<p>No students found.</p>';
+            }
+            ?>
+        </div>
     </div>
-  </div>
+</div>
+
+<!-- ======= Footer ======= -->
+<footer id="footer"></footer><!-- End  Footer -->
+
+<a href="#" class="back-to-top pivot_center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+<script src="assets/vendor/aos/aos.js"></script>
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="assets/vendor/typed.js/typed.umd.js"></script>
+<script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+<script src="assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="assets/js/main.js"></script>
 
 </body>
 
