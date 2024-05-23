@@ -1,13 +1,24 @@
 <?php
-// include 'templates/header.php';
+session_start();
+include 'functions/auth_functions.php';
 include 'functions/student_functions.php';
 
-session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  // For now, accept any username/password
-  $_SESSION['loggedin'] = true;
-  header("Location: index.php");
-  exit();
+  $username = $_POST['username'];
+  $password = $_POST['password'];
+
+  $user = authenticateUser($username, $password);
+
+  if ($user) {
+    $_SESSION['loggedin'] = true;
+    $_SESSION['username'] = $user['username'];
+    $_SESSION['role'] = $user['role'];
+    $_SESSION['studentid'] = $user['studentid'];
+    header("Location: index.php");
+    exit();
+  } else {
+    $login_error = "Invalid username or password.";
+  }
 }
 
 $top_students = getTopStudents();
@@ -34,6 +45,9 @@ $top_students = getTopStudents();
     <div class="row justify-content-center">
       <div class="col-md-6">
         <h2 class="mt-5">Login</h2>
+        <?php if (isset($login_error)) {
+          echo '<div class="alert alert-danger">' . $login_error . '</div>';
+        } ?>
         <form method="post" action="">
           <div class="form-group">
             <label for="username">Username:</label>
@@ -55,10 +69,10 @@ $top_students = getTopStudents();
       echo '<table class="table table-striped mt-3"><thead class="thead-dark"><tr><th>ID</th><th>Name</th><th>Class</th><th>GPA</th></tr></thead><tbody>';
       while ($row = $top_students->fetch_assoc()) {
         echo '<tr>
-              <td>' . $row['MaSV'] . '</td>
-              <td>' . $row['HoTen'] . '</td>
-              <td>' . $row['MaLop'] . '</td>
-              <td>' . $row['GPA'] . '</td>
+                <td>' . $row['MaSV'] . '</td>
+                <td>' . $row['HoTen'] . '</td>
+                <td>' . $row['MaLop'] . '</td>
+                <td>' . $row['GPA'] . '</td>
             </tr>';
       }
       echo '</tbody></table>';
@@ -68,7 +82,6 @@ $top_students = getTopStudents();
     ?>
   </div>
 
-  <!-- <?php include 'templates/footer.php'; ?> -->
 </body>
 
 </html>

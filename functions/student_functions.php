@@ -130,4 +130,29 @@ function getRecentStudents()
   return $conn->query($sql);
 }
 
+function getStudentGPA($student_id)
+{
+  global $conn;
+  $sql = "SELECT AVG(DiemHP) as GPA FROM diemhp WHERE MaSV = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("i", $student_id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $row = $result->fetch_assoc();
+  return $row['GPA'];
+}
+
+function getClassmates($student_id)
+{
+  global $conn;
+  $sql = "SELECT sv.MaSV, sv.HoTen, sv.NgaySinh, sv.DiaChi 
+            FROM sinhvien sv 
+            INNER JOIN sinhvien sv2 ON sv.MaLop = sv2.MaLop 
+            WHERE sv2.MaSV = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("i", $student_id);
+  $stmt->execute();
+  return $stmt->get_result();
+}
+
 ?>
