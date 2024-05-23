@@ -36,7 +36,7 @@ if (isset($_GET['search'])) {
 } else if (isset($_GET['search_all_gpa'])) {
     // Get the search term from the request
     $searchTerm = $_GET['search_all_gpa'];
-    
+
     // Call the function to search for students based on the provided search term
     $filteredStudents = getAllStudentSubjects($searchTerm);
 
@@ -52,8 +52,43 @@ if (isset($_GET['search'])) {
                         <td>{$row['TenNganh']}</td>
                         <td>{$row['TenKhoa']}</td>
                         <td>{$row['HocKy']}</td>
-                        <td>{$row['HocKy']}</td>
                         <td>{$row['DiemHP']}</td>
+                    </tr>";
+        }
+        echo "</table>";
+    } else {
+        // No students found with the given search term
+        echo "Sinh viên không có điểm học phần nào.";
+    }
+} else if (isset($_GET['search_gpa_subjects']) && isset($_GET['id_student'])) {
+    $searchTerm = $_GET['search_gpa_subjects'];
+    $studentId = $_GET['id_student'];
+    $allStudentSubjects = getAllStudentSubjects($studentId);
+    $filteredStudentSubjects = [];
+    
+    if (!empty($searchTerm)) {
+        while ($row = $allStudentSubjects->fetch_assoc()) {
+            $subject = $row['TenHP'];
+            if (stripos($subject, $searchTerm) !== false) {
+                $filteredStudentSubjects[] = $row;
+            }
+        }
+    } else {
+        $filteredStudentSubjects = $allStudentSubjects;
+    }
+    
+    if (count($filteredStudentSubjects) > 0) {
+        // Display the filtered student data
+        echo "<table><tr><th>Mã Học Phần</th><th>Tên Học Phần</th><th>Số DVHT</th><th>Tên Ngành</th><th>Tên Khoa</th><th>Học Kỳ</th><th>Điểm Học Phần</th></tr>";
+        foreach ($filteredStudentSubjects as $subject) {
+            echo "<tr>
+                        <td>{$subject['MaHP']}</td>
+                        <td>{$subject['TenHP']}</td>
+                        <td>{$subject['SoDVHT']}</td>
+                        <td>{$subject['TenNganh']}</td>
+                        <td>{$subject['TenKhoa']}</td>
+                        <td>{$subject['HocKy']}</td>
+                        <td>{$subject['DiemHP']}</td>
                     </tr>";
         }
         echo "</table>";
