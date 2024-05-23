@@ -33,7 +33,7 @@ include 'functions/gpa_functions.php';
             });
 
             function fetchSuggestions(query) {
-                fetch("search_students.php?search=" + query)
+                fetch("search_gpa.php?search=" + query)
                     .then(response => response.text())
                     .then(data => {
                         suggestionBox.innerHTML = data;
