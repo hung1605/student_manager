@@ -33,14 +33,11 @@ include 'functions/gpa_functions.php';
             });
 
             function fetchSuggestions(query) {
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        suggestionBox.innerHTML = xhr.responseText;
-                    }
-                };
-                xhr.open("GET", "search_gpa.php?search=" + query, true);
-                xhr.send();
+                fetch("search_students.php?search=" + query)
+                    .then(response => response.text())
+                    .then(data => {
+                        suggestionBox.innerHTML = data;
+                    });
             }
         });
     </script>

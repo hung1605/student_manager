@@ -27,9 +27,9 @@ if (isset($_GET['id'])) {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             var suggestionBox = document.getElementById("suggestionBox");
-            var studentId = "<?php echo $student_id; ?>"
+            var studentId = "<?php echo $student_id; ?>";
             // Fetch all students when the page finishes loading
-            fetchAllSubjects()
+            fetchSuggestions("");
 
             var searchInput = document.getElementById("searchInput");
             var timeout = null;
@@ -43,31 +43,17 @@ if (isset($_GET['id'])) {
                         fetchSuggestions(searchQuery);
                     }, 300);
                 } else {
-                    fetchAllSubjects()
+                    fetchSuggestions("");
                 }
             });
 
             function fetchSuggestions(query) {
-                var xhr = new XMLHttpRequest();
-                console.log(query)
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        suggestionBox.innerHTML = xhr.responseText;
-                    }
-                };
-                xhr.open("GET", "search_gpa.php?search_gpa_subjects=" + query + "&id_student=" + studentId, true);
-                xhr.send();
-            }
-
-            function fetchAllSubjects() {
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        suggestionBox.innerHTML = xhr.responseText;
-                    }
-                };
-                xhr.open("GET", "search_gpa.php?search_all_gpa=" + studentId, true);
-                xhr.send();
+                var fetchQuery = query.length > 0 ? "search_gpa.php?search_gpa_subjects=" + query + "&id_student=" + studentId : "search_gpa.php?search_all_gpa=" + studentId;
+                fetch(fetchQuery)
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('suggestionBox').innerHTML = data;
+                    })
             }
         });
 
@@ -123,21 +109,13 @@ if (isset($_GET['id'])) {
                 body: JSON.stringify(data)
             })
                 .then(_ => {
-                    var query = document.getElementById("searchInput").value.trim();
-                    var xhr = new XMLHttpRequest();
-                    console.log(query)
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState === 4 && xhr.status === 200) {
-                            suggestionBox.innerHTML = xhr.responseText;
-                        }
-                    };
-
-                    if (query.length > 0) {
-                        xhr.open("GET", "search_gpa.php?search_gpa_subjects=" + query + "&id_student=" + studentId, true);
-                    } else {
-                        xhr.open("GET", "search_gpa.php?search_all_gpa=" + studentId, true);
-                    }
-                    xhr.send();
+                    var query = document.getElementById('searchInput').value.trim();
+                    var fetchQuery = query.length > 0 ? "search_gpa.php?search_gpa_subjects=" + query + "&id_student=" + studentId : "search_gpa.php?search_all_gpa=" + studentId;
+                    fetch(fetchQuery)
+                        .then(response => response.text())
+                        .then(data => {
+                            document.getElementById('suggestionBox').innerHTML = data;
+                        })
                 })
                 .catch(error => {
                     console.error('Đã xảy ra lỗi:', error);
