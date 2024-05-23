@@ -96,4 +96,38 @@ function searchStudents($searchTerm)
   return $result;
 }
 
+function getTotalStudents()
+{
+  global $conn;
+  $sql = "SELECT COUNT(*) as count FROM sinhvien";
+  $result = $conn->query($sql);
+  $row = $result->fetch_assoc();
+  return $row['count'];
+}
+
+function getTotalClasses()
+{
+  global $conn;
+  $sql = "SELECT COUNT(*) as count FROM lop";
+  $result = $conn->query($sql);
+  $row = $result->fetch_assoc();
+  return $row['count'];
+}
+
+function getTotalCourses()
+{
+  global $conn;
+  $sql = "SELECT COUNT(*) as count FROM hocphan";
+  $result = $conn->query($sql);
+  $row = $result->fetch_assoc();
+  return $row['count'];
+}
+
+function getRecentStudents()
+{
+  global $conn;
+  $sql = "SELECT MaSV, HoTen, MaLop, NgaySinh, DiaChi FROM sinhvien ORDER BY MaSV DESC LIMIT 5";
+  return $conn->query($sql);
+}
+
 ?>

@@ -24,7 +24,7 @@ include 'functions/student_functions.php';
           suggestionBox.innerHTML = xhr.responseText;
         }
       };
-      xhr.open("GET", "functions/get_all_students.php", true); // Change the URL to the correct path
+      xhr.open("GET", "get_all_students.php", true); // Change the URL to the correct path
       xhr.send();
     }
 
