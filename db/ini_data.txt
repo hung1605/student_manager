@@ -35,3 +35,9 @@ INSERT INTO diemhp (MaSV, MaHP, DiemHP) VALUES
 ('SV02', 'HP03', 95),
 ('SV03', 'HP01', 75),
 ('SV03', 'HP03', 80);
+
+
+INSERT INTO user (username, password, studentid, role) VALUES
+('a1', '1', NULL, 'admin'),
+('s1', '1', 1, 'student'), -- assuming 1 is a valid MaSV in sinhvien
+('s2', '1', 2, 'student'); -- assuming 2 is a valid MaSV in sinhvien
