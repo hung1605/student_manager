@@ -17,15 +17,15 @@ CREATE TABLE lop (
     MaLop CHAR(10) PRIMARY KEY,
     TenLop VARCHAR(100) NOT NULL,
     MaNganh CHAR(10) NOT NULL,
-    KhoaHoc VARCHAR(20) NOT NULL,
-    HeDT VARCHAR(20) NOT NULL,
+    KhoaHoc VARCHAR(50) NOT NULL,
+    HeDT VARCHAR(50) NOT NULL,
     NamNhapHoc YEAR NOT NULL,
     FOREIGN KEY (MaNganh) REFERENCES nganh(MaNganh)
 );
 
--- Create the 'sinhvien' table
+-- Create the 'sinhvien' table with MaSV as INT and auto-increment
 CREATE TABLE sinhvien (
-    MaSV CHAR(10) PRIMARY KEY,
+    MaSV INT(11) PRIMARY KEY AUTO_INCREMENT,
     HoTen VARCHAR(100) NOT NULL,
     MaLop CHAR(10) NOT NULL,
     GioiTinh VARCHAR(10) NOT NULL,
@@ -38,27 +38,28 @@ CREATE TABLE sinhvien (
 CREATE TABLE hocphan (
     MaHP CHAR(10) PRIMARY KEY,
     TenHP VARCHAR(100) NOT NULL,
-    SoDVHT INT NOT NULL,
+    SoDVHT INT(11) NOT NULL,
     MaNganh CHAR(10) NOT NULL,
-    HocKy INT NOT NULL,
+    HocKy INT(11) NOT NULL,
     FOREIGN KEY (MaNganh) REFERENCES nganh(MaNganh)
 );
 
--- Create the 'diemhp' table
+-- Create the 'diemhp' table with foreign key referencing sinhvien
 CREATE TABLE diemhp (
-    MaSV CHAR(10) NOT NULL,
+    MaSV INT(11) NOT NULL,
     MaHP CHAR(10) NOT NULL,
-    DiemHP FLOAT NOT NULL,
+    DiemHP INT(11) NOT NULL,
     PRIMARY KEY (MaSV, MaHP),
-    FOREIGN KEY (MaSV) REFERENCES sinhvien(MaSV),
+    FOREIGN KEY (MaSV) REFERENCES sinhvien(MaSV) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (MaHP) REFERENCES hocphan(MaHP)
 );
 
-
+-- Create the 'user' table
 CREATE TABLE user (
-    username VARCHAR(50) NOT NULL PRIMARY KEY,
+    username VARCHAR(50) PRIMARY KEY,
     password VARCHAR(255) NOT NULL,
-    studentid INT,
+    studentid INT(11),
     role ENUM('admin', 'student') NOT NULL,
     FOREIGN KEY (studentid) REFERENCES sinhvien(MaSV)
 );
+
