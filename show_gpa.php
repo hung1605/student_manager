@@ -42,8 +42,7 @@ if (isset($_GET['id'])) {
                     timeout = setTimeout(function () {
                         fetchSuggestions(searchQuery);
                     }, 300);
-                }
-                else {
+                } else {
                     fetchAllSubjects()
                 }
             });
@@ -71,8 +70,80 @@ if (isset($_GET['id'])) {
                 xhr.send();
             }
         });
-    </script>
 
+        function editDiemHP(maHP) {
+            createInputField(maHP);
+            changeButtonChangeToButtonSave(maHP)
+        }
+
+        function createInputField(maHP) {
+            // Lấy giá trị hiện tại của ô span
+            var currentValue = document.getElementById('diemHP' + maHP).innerHTML;
+
+            // Tạo ô input để nhập giá trị mới
+            var inputField = document.createElement('input');
+            inputField.type = 'text';
+            inputField.value = currentValue;
+            inputField.id = 'inputDiemHP' + maHP;
+
+            // Thay thế ô span bằng ô input
+            document.getElementById('diemHP' + maHP).innerHTML = '';
+            document.getElementById('diemHP' + maHP).appendChild(inputField);
+        }
+
+        function changeButtonChangeToButtonSave(maHP) {
+            console.log(maHP)
+            var buttonSave = document.getElementById('buttonDiemHP' + maHP)
+            buttonSave.textContent = 'Lưu';
+            buttonSave.onclick = function () {
+                saveDiemHP(maHP, "<?php echo $student_id; ?>");
+            };
+        }
+
+        function saveDiemHP(subjectId, studentId) {
+            // Lấy giá trị mới từ ô input
+            var inputField = document.getElementById('inputDiemHP' + subjectId);
+            var newValue = inputField.value;
+
+            console.log(newValue)
+
+            // Tạo đối tượng dữ liệu để gửi đi
+            var data = {
+                save_gpa_subjects: subjectId,
+                new_gpa: newValue,
+                student_id: studentId
+            };
+
+            // Gửi yêu cầu POST bằng fetch
+            fetch('search_gpa.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(_ => {
+                    var query = document.getElementById("searchInput").value.trim();
+                    var xhr = new XMLHttpRequest();
+                    console.log(query)
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            suggestionBox.innerHTML = xhr.responseText;
+                        }
+                    };
+
+                    if (query.length > 0) {
+                        xhr.open("GET", "search_gpa.php?search_gpa_subjects=" + query + "&id_student=" + studentId, true);
+                    } else {
+                        xhr.open("GET", "search_gpa.php?search_all_gpa=" + studentId, true);
+                    }
+                    xhr.send();
+                })
+                .catch(error => {
+                    console.error('Đã xảy ra lỗi:', error);
+                });
+        }
+    </script>
     <h2>Điểm các môn của sinh viên <?php echo $student['HoTen']; ?></h2>
 
     <div>

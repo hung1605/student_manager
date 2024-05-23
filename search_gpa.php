@@ -52,7 +52,10 @@ if (isset($_GET['search'])) {
                         <td>{$row['TenNganh']}</td>
                         <td>{$row['TenKhoa']}</td>
                         <td>{$row['HocKy']}</td>
-                        <td>{$row['DiemHP']}</td>
+                        <td><span id='diemHP{$row['MaHP']}'>{$row['DiemHP']}</span></td>
+                        <td>
+                            <button id='buttonDiemHP{$row['MaHP']}' onclick=\"editDiemHP('{$row['MaHP']}')\">Sửa Điểm</button>
+                        </td>
                     </tr>";
         }
         echo "</table>";
@@ -65,7 +68,7 @@ if (isset($_GET['search'])) {
     $studentId = $_GET['id_student'];
     $allStudentSubjects = getAllStudentSubjects($studentId);
     $filteredStudentSubjects = [];
-    
+
     if (!empty($searchTerm)) {
         while ($row = $allStudentSubjects->fetch_assoc()) {
             $subject = $row['TenHP'];
@@ -76,7 +79,7 @@ if (isset($_GET['search'])) {
     } else {
         $filteredStudentSubjects = $allStudentSubjects;
     }
-    
+
     if (count($filteredStudentSubjects) > 0) {
         // Display the filtered student data
         echo "<table><tr><th>Mã Học Phần</th><th>Tên Học Phần</th><th>Số DVHT</th><th>Tên Ngành</th><th>Tên Khoa</th><th>Học Kỳ</th><th>Điểm Học Phần</th></tr>";
@@ -88,7 +91,10 @@ if (isset($_GET['search'])) {
                         <td>{$subject['TenNganh']}</td>
                         <td>{$subject['TenKhoa']}</td>
                         <td>{$subject['HocKy']}</td>
-                        <td>{$subject['DiemHP']}</td>
+                        <td><span id='diemHP{$subject['MaHP']}'>{$subject['DiemHP']}</span></td>
+                        <td>
+                            <button id='buttonDiemHP{$subject['MaHP']}' onclick=\"editDiemHP('{$subject['MaHP']}')\">Sửa Điểm</button>
+                        </td>
                     </tr>";
         }
         echo "</table>";
@@ -96,7 +102,15 @@ if (isset($_GET['search'])) {
         // No students found with the given search term
         echo "Sinh viên không có điểm học phần nào.";
     }
+} else if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    $input_data = file_get_contents("php://input");
+    $post_data = json_decode($input_data, true);
+    $subjectID = $post_data["save_gpa_subjects"];
+    $newGPA = $post_data["new_gpa"];
+    $studentID = $post_data["student_id"];
+    saveGPAChanges($studentID, $subjectID, $newGPA);
 } else {
     // No search term provided in the request
     echo "Không tồn tại sinh viên.";
 }
+?>

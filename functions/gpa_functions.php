@@ -1,5 +1,4 @@
 <?php
-
 function getAllStudentSubjects($id) {
     global $conn;
     $sql = "SELECT 
@@ -26,6 +25,15 @@ function getAllStudentSubjects($id) {
     $stmt->execute();
 
     return $stmt->get_result();
+}
+
+function saveGPAChanges($studentID, $subjectId, $newGPA) {
+    global $conn;
+    $studentID = $conn->real_escape_string($studentID);
+    $subjectId = $conn->real_escape_string($subjectId);
+    $newGPA = $conn->real_escape_string($newGPA);
+    $sql = "UPDATE diemhp SET DiemHP = '$newGPA' WHERE MaSV = '$studentID' AND MaHP = '$subjectId'";
+    $conn->query($sql);
 }
 
 ?>
