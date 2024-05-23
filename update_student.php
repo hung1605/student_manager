@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (updateStudent($student_id, $name, $class, $dob, $address, $gender)) {
     echo "Student updated successfully.";
     // Redirect to a page showing updated student details
-    header("Location: all_students.php?id=" . $student_id);
+    header("Location: students_manager.php?id=" . $student_id);
     exit();
   } else {
     echo "Error updating student.";

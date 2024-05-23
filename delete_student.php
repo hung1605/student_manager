@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
   // Perform the deletion
   if (deleteStudent($student_id)) {
     echo "Student deleted successfully.";
-    header("Location: all_students.php");
+    header("Location: students_manager.php");
   } else {
     echo "Error deleting student.";
   }

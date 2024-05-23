@@ -44,7 +44,7 @@ if ($recentStudents->num_rows > 0) {
             <td>{$row['MaLop']}</td>
             <td>{$row['NgaySinh']}</td>
             <td>{$row['DiaChi']}</td>
-          </tr>";
+        </tr>";
     }
     echo "</table>";
 } else {

@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if (addStudent($name, $class, $dob, $address, $gender)) {
     echo "Student added successfully.";
-    header("Location: all_students.php");
+    header("Location: students_manager.php");
     exit();
   } else {
     echo "Error adding student.";
