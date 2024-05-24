@@ -14,8 +14,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['username'] = $user['username'];
     $_SESSION['role'] = $user['role'];
     $_SESSION['studentid'] = $user['studentid'];
-    header("Location: index.php");
-    exit();
+
+    if($user['role'] == 'student') {
+      header("Location: student_view.php");
+      exit();
+    } else {
+      header("Location: students_manager.php");
+      exit();
+    }
   } else {
     $login_error = "Invalid username or password.";
   }

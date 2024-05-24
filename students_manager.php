@@ -56,49 +56,141 @@ include 'functions/student_functions.php';
       xhr.send();
     }
   });
-</script>
+
+  // document.addEventListener("DOMContentLoaded", function() {
+  //   var suggestionBox = document.getElementById("suggestionBox");
+
+  //   // Fetch all students when the page finishes loading
+  //   fetchSuggestions("")
+
+  //   var searchInput = document.getElementById("searchInput");
+  //   var timeout = null;
+
+  //   searchInput.addEventListener("input", function() {
+  //     clearTimeout(timeout);
+  //     var searchQuery = searchInput.value.trim();
+  //     if (searchQuery.length >= 0) {
+  //       // Fetch suggestions after a short delay to avoid excessive requests
+  //       timeout = setTimeout(function() {
+  //         fetchSuggestions(searchQuery);
+  //       }, 300);
+  //     }
+  //   });
+
+  //   function fetchSuggestions(query) {
+  //     fetch("search_gpa.php?search=" + query)
+  //       .then(response => response.text())
+  //       .then(data => {
+  //         suggestionBox.innerHTML = data;
+  //       });
+  //   }
+  // });
 
 
-
-<!-- HTML for search input and suggestion box -->
-<h2>All Students</h2>
-
-<div>
-  <input type="text" id="searchInput" placeholder="Search by Name" class="d-inline">
-  <button onclick="window.location.href='add_student.php'">Add Student</button>
-  <div id="suggestionBox"></div>
-</div>
-
-
-<!-- <div id="studentList">
-  <?php
-  $students = getAllStudents();
-  if ($students->num_rows > 0) {
-    echo "<table><tr><th>ID</th><th>Name</th><th>Class</th><th>DOB</th><th>Address</th><th>Actions</th></tr>";
-    while ($row = $students->fetch_assoc()) {
-      echo "<tr>
-                <td>{$row['MaSV']}</td>
-                <td>{$row['HoTen']}</td>
-                <td>{$row['MaLop']}</td>
-                <td>{$row['NgaySinh']}</td>
-                <td>{$row['DiaChi']}</td>
-                <td>
-                    <button onclick=\"openPopup('update_student.php?id={$row['MaSV']}')\">Update</button>
-                    <button onclick=\"openPopup('delete_student.php?id={$row['MaSV']}')\">Delete</button>
-                </td>
-              </tr>";
-    }
-    echo "</table>";
-  } else {
-    echo "No students found.";
-  }
-  ?>
-</div> -->
-
-<script>
   function openPopup(url) {
     window.open(url, '_self', 'width=600,height=400');
   }
 </script>
+
+<!-- CSS Styles -->
+<style>
+  table {
+    width: 100%;
+    /* Table takes full width of its container */
+    border-collapse: collapse;
+    /* Remove default spacing between table cells */
+  }
+
+  th,
+  td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    color: black;
+  }
+
+  body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    margin-bottom: 60px;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  h2 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .input-group {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  .input-group input[type="text"] {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .input-group button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+
+  .suggestion-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: black;
+  }
+
+  .suggestion-table th,
+  .suggestion-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
+
+  .suggestion-table th {
+    background-color: #007bff;
+    color: #fff;
+  }
+
+  .suggestion-table tr:hover {
+    background-color: #f2f2f2;
+  }
+</style>
+
+<div class="container">
+  <h2>All Students</h2>
+
+  <!-- Search Input -->
+  <div class="input-group">
+    <input type="text" id="searchInput" placeholder="Search by Name">
+    <button onclick="window.location.href='add_student.php'">Add Student</button>
+  </div>
+
+  <!-- Suggestion Box -->
+  <div id="suggestionBox"></div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <hr>
+  <p>&copy; 2024 Student Management System</p>
+</footer>
 
 <?php include 'templates/footer.php'; ?>

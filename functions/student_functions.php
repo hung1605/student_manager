@@ -35,6 +35,9 @@ function deleteStudent($id)
   $sql_delete_related = "DELETE FROM diemhp WHERE MaSV='$id'";
   $conn->query($sql_delete_related);
 
+  $sql_delete_related = "DELETE FROM user WHERE studentid='$id'";
+  $conn->query($sql_delete_related);
+
   // Then delete the student record
   $sql_delete_student = "DELETE FROM sinhvien WHERE MaSV='$id'";
   return $conn->query($sql_delete_student);

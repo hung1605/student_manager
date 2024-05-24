@@ -54,7 +54,7 @@ if (isset($_GET['search'])) {
                         <td>{$row['HocKy']}</td>
                         <td><span id='diemHP{$row['MaHP']}'>{$row['DiemHP']}</span></td>
                         <td>
-                            <button id='buttonDiemHP{$row['MaHP']}' onclick=\"editDiemHP('{$row['MaHP']}')\">Sửa Điểm</button>
+                            <button class=\"btn btn-info\" id='buttonDiemHP{$row['MaHP']}' onclick=\"editDiemHP('{$row['MaHP']}')\">Sửa</button>
                         </td>
                     </tr>";
         }
@@ -93,7 +93,7 @@ if (isset($_GET['search'])) {
                         <td>{$subject['HocKy']}</td>
                         <td><span id='diemHP{$subject['MaHP']}'>{$subject['DiemHP']}</span></td>
                         <td>
-                            <button id='buttonDiemHP{$subject['MaHP']}' onclick=\"editDiemHP('{$subject['MaHP']}')\">Sửa Điểm</button>
+                            <button id='buttonDiemHP{$subject['MaHP']}' onclick=\"editDiemHP('{$subject['MaHP']}')\">Sửa</button>
                         </td>
                     </tr>";
         }
