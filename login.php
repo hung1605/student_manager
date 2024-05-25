@@ -99,7 +99,7 @@ $top_students = getTopStudents();
         </form>
       </div>
       <div class="col-md-6 table-container">
-        <h2 class="text-center">Top 3 Students with Highest GPA</h2>
+        <h2 class="text-center text-dark">Top 3 Students with Highest GPA</h2>
         <?php
         if ($top_students->num_rows > 0) {
           echo '<table class="table table-striped mt-3"><thead class="thead-dark"><tr><th>ID</th><th>Name</th><th>Class</th><th>GPA</th></tr></thead><tbody>';
