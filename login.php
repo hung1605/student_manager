@@ -9,22 +9,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $user = authenticateUser($username, $password);
 
-  if ($user) {
-    $_SESSION['loggedin'] = true;
-    $_SESSION['username'] = $user['username'];
-    $_SESSION['role'] = $user['role'];
-    $_SESSION['studentid'] = $user['studentid'];
+    if ($user) {
+        $_SESSION['loggedin'] = true;
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['role'] = $user['role'];
+        $_SESSION['studentid'] = $user['studentid'];
 
-    if($user['role'] == 'student') {
-      header("Location: student_view.php");
-      exit();
+        if ($user['role'] == 'student') {
+            header("Location: student_view.php");
+            exit();
+        } else {
+            header("Location: students_manager.php");
+            exit();
+        }
     } else {
-      header("Location: students_manager.php");
-      exit();
+        $login_error = "Invalid username or password.";
     }
-  } else {
-    $login_error = "Invalid username or password.";
-  }
 }
 
 $top_students = getTopStudents();
@@ -81,11 +81,13 @@ $top_students = getTopStudents();
     </div>
 </nav>
 
-<div class="d-flex justify-content-center" style="width: 100%;height: 100vh;background: url('assets/img/hero-bg.jpg' ) top center;background-size: cover;">
+<div class="d-flex justify-content-center"
+     style="width: 100%;height: 100vh;background: url('assets/img/hero-bg.jpg' ) top center;background-size: cover;">
     <div class="flex-column pivot_center">
         <div class="hero-container" data-aos="fade-in">
             <h1 style="color: #AD171C; font-weight: bold">Posts and Telecommunications<br>Institute of Technology</h1>
-            <p style="color: #AD171C; font-weight: bold">We are <span style="font-weight: bold;border-bottom: 2px solid #0a53be;" class="typed" data-typed-items="Training, Research, Production and Business"></span></p>
+            <p style="color: #AD171C; font-weight: bold">We are <span style="font-weight: bold;border-bottom: 2px solid #0a53be;" class="typed"
+                                                                      data-typed-items="Training, Research, Production and Business"></span></p>
         </div>
     </div>
 </div>
@@ -107,7 +109,25 @@ $top_students = getTopStudents();
                     <label for="password">Password:</label>
                     <input type="password" class="form-control" id="password" name="password" required>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Login</button>
+                <br>
+                <button type="submit" class="btn btn-block" style="
+                    --bs-btn-color: #fff;
+                    --bs-btn-bg: #AD171C;
+                    --bs-btn-border-color: #AD171C;
+                    --bs-btn-hover-color: #fff;
+                    --bs-btn-hover-bg: #AD171C;
+                    --bs-btn-hover-border-color: #AD171C;
+                    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+                    --bs-btn-active-color: #fff;
+                    --bs-btn-active-bg: #AD171C;
+                    --bs-btn-active-border-color: #AD171C;
+                    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+                    --bs-btn-disabled-color: #fff;
+                    --bs-btn-disabled-bg: #AD171C;
+                    --bs-btn-disabled-border-color: #AD171C
+                ">
+                    Đăng nhập
+                </button>
             </form>
         </div>
         <div class="col-md-6 table-container">

@@ -15,7 +15,7 @@ if (isset($_GET['search'])) {
     // Check if any students are found
     if ($filteredStudents->num_rows > 0) {
         // Display the filtered student data
-        echo "<table><tr><th>ID</th><th>Name</th><th>Class</th><th>DOB</th><th>Address</th><th>Actions</th></tr>";
+        echo "<table class='table table-striped mt-3'><tr><th>ID</th><th>Name</th><th>Class</th><th>DOB</th><th>Address</th><th>Actions</th></tr>";
         while ($row = $filteredStudents->fetch_assoc()) {
             echo "<tr>
                         <td>{$row['MaSV']}</td>
@@ -24,7 +24,7 @@ if (isset($_GET['search'])) {
                         <td>{$row['NgaySinh']}</td>
                         <td>{$row['DiaChi']}</td>
                         <td>
-                            <button onclick=\"openPopup('show_gpa.php?id={$row['MaSV']}')\">Xem Điểm</button>
+                            <button class=\"btn\" style=\"background: #AD171C\" onclick=\"openPopup('show_gpa.php?id={$row['MaSV']}')\">Xem Điểm</button>
                         </td>
                     </tr>";
         }
@@ -54,7 +54,7 @@ if (isset($_GET['search'])) {
                         <td>{$row['HocKy']}</td>
                         <td><span id='diemHP{$row['MaHP']}'>{$row['DiemHP']}</span></td>
                         <td>
-                            <button class=\"btn btn-info\" id='buttonDiemHP{$row['MaHP']}' onclick=\"editDiemHP('{$row['MaHP']}')\">Sửa</button>
+                            <button class=\"btn\" style=\"background: #AD171C; color: whitesmoke\" id='buttonDiemHP{$row['MaHP']}' onclick=\"editDiemHP('{$row['MaHP']}')\">Sửa</button>
                         </td>
                     </tr>";
         }
@@ -93,7 +93,7 @@ if (isset($_GET['search'])) {
                         <td>{$subject['HocKy']}</td>
                         <td><span id='diemHP{$subject['MaHP']}'>{$subject['DiemHP']}</span></td>
                         <td>
-                            <button id='buttonDiemHP{$subject['MaHP']}' onclick=\"editDiemHP('{$subject['MaHP']}')\">Sửa</button>
+                            <button class=\"btn\" style=\"background: #AD171C; color: whitesmoke\" id='buttonDiemHP{$subject['MaHP']}' onclick=\"editDiemHP('{$subject['MaHP']}')\">Sửa</button>
                         </td>
                     </tr>";
         }

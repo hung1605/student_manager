@@ -24,146 +24,242 @@ if (isset($_GET['id'])) {
 }
 ?>
 
-<style>
-    table {
-        width: 100%;
-        /* Table takes full width of its container */
-        border-collapse: collapse;
-        /* Remove default spacing between table cells */
-    }
-
-    th,
-    td {
-        padding: 8px;
-        border: 1px solid #ddd;
-        color: black;
-    }
-
-    body {
-        background-color: #f8f9fa;
-        font-family: Arial, sans-serif;
-        margin-bottom: 60px;
-    }
-
-    .container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    h2 {
-        color: #333;
-        margin-bottom: 20px;
-    }
-</style>
-<!-- Include JavaScript for dynamic search suggestions -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var suggestionBox = document.getElementById("suggestionBox");
-        var studentId = "<?php echo $student_id; ?>";
-        // Fetch all students when the page finishes loading
-        fetchSuggestions("");
-
-        var searchInput = document.getElementById("searchInput");
-        var timeout = null;
-
-        searchInput.addEventListener("input", function() {
-            clearTimeout(timeout);
-            var searchQuery = searchInput.value.trim();
-            if (searchQuery.length > 0) {
-                // Fetch suggestions after a short delay to avoid excessive requests
-                timeout = setTimeout(function() {
-                    fetchSuggestions(searchQuery);
-                }, 300);
-            } else {
-                fetchSuggestions("");
-            }
-        });
-
-        function fetchSuggestions(query) {
-            var fetchQuery = query.length > 0 ? "search_gpa.php?search_gpa_subjects=" + query + "&id_student=" + studentId : "search_gpa.php?search_all_gpa=" + studentId;
-            fetch(fetchQuery)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('suggestionBox').innerHTML = data;
-                })
+    <style>
+        table {
+            width: 100%;
+            /* Table takes full width of its container */
+            border-collapse: collapse;
+            /* Remove default spacing between table cells */
         }
-    });
 
-    function editDiemHP(maHP) {
-        createInputField(maHP);
-        changeButtonChangeToButtonSave(maHP)
-    }
+        th,
+        td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            color: black;
+        }
 
-    function createInputField(maHP) {
-        // Lấy giá trị hiện tại của ô span
-        var currentValue = document.getElementById('diemHP' + maHP).innerHTML;
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            margin-bottom: 60px;
+        }
 
-        // Tạo ô input để nhập giá trị mới
-        var inputField = document.createElement('input');
-        inputField.type = 'text';
-        inputField.value = currentValue;
-        inputField.id = 'inputDiemHP' + maHP;
-        inputField.style.width = '50px';
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-        // Thay thế ô span bằng ô input
-        document.getElementById('diemHP' + maHP).innerHTML = '';
-        document.getElementById('diemHP' + maHP).appendChild(inputField);
-    }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+    </style>
+    <!-- Include JavaScript for dynamic search suggestions -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var suggestionBox = document.getElementById("suggestionBox");
+            var studentId = "<?php echo $student_id; ?>";
+            // Fetch all students when the page finishes loading
+            fetchSuggestions("");
 
-    function changeButtonChangeToButtonSave(maHP) {
-        console.log(maHP)
-        var buttonSave = document.getElementById('buttonDiemHP' + maHP)
-        buttonSave.textContent = 'Lưu';
-        buttonSave.onclick = function() {
-            saveDiemHP(maHP, "<?php echo $student_id; ?>");
-        };
-    }
+            var searchInput = document.getElementById("searchInput");
+            var timeout = null;
 
-    function saveDiemHP(subjectId, studentId) {
-        // Lấy giá trị mới từ ô input
-        var inputField = document.getElementById('inputDiemHP' + subjectId);
-        var newValue = inputField.value;
+            searchInput.addEventListener("input", function () {
+                clearTimeout(timeout);
+                var searchQuery = searchInput.value.trim();
+                if (searchQuery.length > 0) {
+                    // Fetch suggestions after a short delay to avoid excessive requests
+                    timeout = setTimeout(function () {
+                        fetchSuggestions(searchQuery);
+                    }, 300);
+                } else {
+                    fetchSuggestions("");
+                }
+            });
 
-        console.log(newValue)
-
-        // Tạo đối tượng dữ liệu để gửi đi
-        var data = {
-            save_gpa_subjects: subjectId,
-            new_gpa: newValue,
-            student_id: studentId
-        };
-
-        // Gửi yêu cầu POST bằng fetch
-        fetch('search_gpa.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(_ => {
-                var query = document.getElementById('searchInput').value.trim();
+            function fetchSuggestions(query) {
                 var fetchQuery = query.length > 0 ? "search_gpa.php?search_gpa_subjects=" + query + "&id_student=" + studentId : "search_gpa.php?search_all_gpa=" + studentId;
                 fetch(fetchQuery)
                     .then(response => response.text())
                     .then(data => {
                         document.getElementById('suggestionBox').innerHTML = data;
                     })
-            })
-            .catch(error => {
-                console.error('Đã xảy ra lỗi:', error);
-            });
-    }
-</script>
+            }
+        });
 
-<div class="container border rounded shadow-sm p-3 mb-5 bg-white rounded text-dark" style="max-width: none;">
-    <h2 class="text-dark ">Điểm các môn của sinh viên <?php echo $student['HoTen']; ?></h2>
-    <input type="text" id="searchInput" placeholder="Search subject by name" class="form-control mb-3">
-    <div id="suggestionBox"></div>
-</div>
+        function editDiemHP(maHP) {
+            createInputField(maHP);
+            changeButtonChangeToButtonSave(maHP)
+        }
+
+        function createInputField(maHP) {
+            // Lấy giá trị hiện tại của ô span
+            var currentValue = document.getElementById('diemHP' + maHP).innerHTML;
+
+            // Tạo ô input để nhập giá trị mới
+            var inputField = document.createElement('input');
+            inputField.type = 'text';
+            inputField.value = currentValue;
+            inputField.id = 'inputDiemHP' + maHP;
+            inputField.style.width = '50px';
+
+            // Thay thế ô span bằng ô input
+            document.getElementById('diemHP' + maHP).innerHTML = '';
+            document.getElementById('diemHP' + maHP).appendChild(inputField);
+        }
+
+        function changeButtonChangeToButtonSave(maHP) {
+            console.log(maHP)
+            var buttonSave = document.getElementById('buttonDiemHP' + maHP)
+            buttonSave.textContent = 'Lưu';
+            buttonSave.onclick = function () {
+                saveDiemHP(maHP, "<?php echo $student_id; ?>");
+            };
+        }
+
+        function saveDiemHP(subjectId, studentId) {
+            // Lấy giá trị mới từ ô input
+            var inputField = document.getElementById('inputDiemHP' + subjectId);
+            var newValue = inputField.value;
+
+            console.log(newValue)
+
+            // Tạo đối tượng dữ liệu để gửi đi
+            var data = {
+                save_gpa_subjects: subjectId,
+                new_gpa: newValue,
+                student_id: studentId
+            };
+
+            // Gửi yêu cầu POST bằng fetch
+            fetch('search_gpa.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(_ => {
+                    var query = document.getElementById('searchInput').value.trim();
+                    var fetchQuery = query.length > 0 ? "search_gpa.php?search_gpa_subjects=" + query + "&id_student=" + studentId : "search_gpa.php?search_all_gpa=" + studentId;
+                    fetch(fetchQuery)
+                        .then(response => response.text())
+                        .then(data => {
+                            document.getElementById('suggestionBox').innerHTML = data;
+                        })
+                })
+                .catch(error => {
+                    console.error('Đã xảy ra lỗi:', error);
+                });
+        }
+    </script>
+
+    <!-- CSS Styles -->
+    <style>
+        table {
+            width: 100%;
+            /* Table takes full width of its container */
+            border-collapse: collapse;
+            /* Remove default spacing between table cells */
+        }
+
+        th,
+        td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            color: black;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            margin-bottom: 60px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .input-group button {
+            padding: 10px 20px;
+            background-color: #AD171C;
+            border: none;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .suggestion-table {
+            width: 100%;
+            border-collapse: collapse;
+            color: black;
+        }
+
+        .suggestion-table th,
+        .suggestion-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .suggestion-table th {
+            background-color: #AD171C;
+            color: #fff;
+        }
+
+        .suggestion-table tr:hover {
+            background-color: #f2f2f2;
+        }
+    </style>
+
+    <div class="d-flex justify-content-center"
+         style="width: 100%;height: 100vh;background: url('assets/img/hero-bg.jpg' ) top center;background-size: cover;">
+        <div class="container">
+            <h2 class="text-dark ">Điểm các môn của sinh viên <?php echo $student['HoTen']; ?></h2>
+            <!-- Search Input -->
+            <div class="input-group">
+                <input type="text" id="searchInput" placeholder="Search subject by name">
+            </div>
+
+            <!-- Suggestion Box -->
+            <div id="suggestionBox"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <hr>
+        <p>&copy; 2024 Student Management System</p>
+    </footer>
 
 <?php include 'templates/footer.php'; ?>
