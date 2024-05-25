@@ -23,8 +23,9 @@ if (isset($_GET['search'])) {
                         <td>{$row['NgaySinh']}</td>
                         <td>{$row['DiaChi']}</td>
                         <td>
-                            <button onclick=\"openPopup('update_student.php?id={$row['MaSV']}')\">Update</button>
-                            <button onclick=\"openPopup('delete_student.php?id={$row['MaSV']}')\">Delete</button>
+                            <button class=\"btn btn-info\" onclick=\"openPopup('update_student.php?id={$row['MaSV']}')\">Update</button>
+                            <button class=\"btn btn-info\" onclick=\"openPopup('show_gpa.php?id={$row['MaSV']}')\">Xem Điểm</button>
+                            <button class=\"btn btn-danger\" onclick=\"openPopup('delete_student.php?id={$row['MaSV']}')\">Delete</button>
                         </td>
                     </tr>";
     }

@@ -12,21 +12,64 @@ include 'functions/student_functions.php';
 $classes = getAllClasses();
 ?>
 
-<h2>Classes</h2>
+<style>
+  table {
+    width: 100%;
+    /* Table takes full width of its container */
+    border-collapse: collapse;
+    /* Remove default spacing between table cells */
+  }
 
-<div>
-  <label for="classSelect">Select Class:</label>
-  <select id="classSelect">
-    <option value="">Select a class</option>
-    <?php
-    while ($row = $classes->fetch_assoc()) {
-      echo "<option value='{$row['MaLop']}'>{$row['TenLop']}</option>";
-    }
-    ?>
-  </select>
+  th,
+  td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    color: black;
+  }
+
+  body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    margin-bottom: 60px;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  h2 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+</style>
+
+
+<h2 class="d-flex justify-content-center">Classes</h2>
+
+<div class="d-flex justify-content-center">
+  <div class="form-group w-50">
+    <label for="classSelect">Select Class:</label>
+    <select id="classSelect" class="form-control">
+      <option value="">Select a class</option>
+      <?php
+      while ($row = $classes->fetch_assoc()) {
+        echo "<option value='{$row['MaLop']}'>{$row['TenLop']}</option>";
+      }
+      ?>
+    </select>
+  </div>
 </div>
 
-<div id="studentList"></div>
+<div class="container">
+  <h2 class="d-flex justify-content-center">Student List</h2>
+  <div id="studentList"></div>
+</div>
+
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
